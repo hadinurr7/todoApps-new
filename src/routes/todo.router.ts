@@ -6,9 +6,9 @@ import { verifyToken } from "../middleware/jwt";
 const router = express.Router();
 
 
-router.post("/todos",verifyToken, createTodoController);
+router.post("/",verifyToken, createTodoController);
 router.patch("/:id", verifyToken, editTodoController);
 router.patch("/:id/status", verifyToken, updateStatusController);
-router.patch("/:id/assign", verifyToken, assignTodoController);
+router.post("/assign", verifyToken, assignTodoController);
 
 export default router;
