@@ -1,8 +1,8 @@
 import { assignTodoModels, editTodoModels, insertTodoModels, updateStatusTodoModels } from "../models/todo.models";
 
 
-export const createTodoService = async (userId: number, title: string, description: string) => {
-  return await insertTodoModels(userId, title, description);
+export const createTodoService = async (creatorId: number, title: string, description: string) => {
+  return await insertTodoModels(creatorId, title, description);
 };
 
 

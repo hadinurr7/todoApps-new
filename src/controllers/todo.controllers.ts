@@ -11,13 +11,12 @@ export const createTodoController = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("buat todo");
   try {
-    const userId = Number(res.locals.user.id);
-    console.log("ini userId", userId);
+    const creatorId = Number(res.locals.user.id);
+    console.log("ini creatorId", creatorId);
 
     const { title, description } = req.body;
-    const todo = await createTodoService(userId, title, description);
+    const todo = await createTodoService(creatorId, title, description);
     res.status(201).send({ message: "todo created", todo });
   } catch (error) {
     next(error);
@@ -28,14 +27,14 @@ export const editTodoController = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { title, description } = req.body;
   const todo = await editTodoService(Number(id), title, description);
-  res.json(todo);
+  res.send(todo);
 };
 
 export const updateStatusController = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { status } = req.body;
   const todo = await updateStatusTodoService(Number(id), status);
-  res.json(todo);
+  res.send(todo);
 };
 
 export const assignTodoController = async (
@@ -48,7 +47,7 @@ export const assignTodoController = async (
     const creatorId = res.locals.user.id;
 
     if (!assignee_email) {
-      res.status(400).json({ message: "email required to assign" });
+      res.status(400).send({ message: "email required to assign" });
       return;
     }
 
@@ -59,7 +58,7 @@ export const assignTodoController = async (
       assignee_email
     );
 
-    res.status(201).json({ message: "Todo assigned", todo });
+    res.status(201).send({ message: "Todo assigned", todo });
   } catch (error) {
     next(error);
   }

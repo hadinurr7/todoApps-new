@@ -1,16 +1,18 @@
 import { pool } from "../config";
 
 export const insertTodoModels = async (
-  userId: number,
+  creatorId: number,
   title: string,
   description: string
 ) => {
   const result = await pool.query(
-    'INSERT INTO "todoApps"."todos" (user_Id, title, description) VALUES ($1, $2, $3) RETURNING *',
-    [userId, title, description]
+    `INSERT INTO "todoApps"."todos" (creator_id, title, description)
+     VALUES ($1, $2, $3) RETURNING *`,
+    [creatorId, title, description]
   );
   return result.rows[0];
 };
+
 
 export const editTodoModels = async (
   id: number,
