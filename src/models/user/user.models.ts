@@ -1,9 +1,13 @@
-import { pool } from "../config";
+import { pool } from "../../config";
 
-export const findUserByEmail = async (email: string) => {
-  const result = await pool.query('SELECT * FROM "todoApps"."users" WHERE email = $1', [email]);
+export async function findUserByEmailOrUsername(email: string, username: string) {
+  const result = await pool.query(
+    `SELECT * FROM "todoApps"."users" WHERE email = $1 OR username = $2 LIMIT 1`,
+    [email, username]
+  );
   return result.rows[0];
-};
+}
+
 
 export const createUser = async (username: string, email: string, hashedPassword: string) => {
   const result = await pool.query(

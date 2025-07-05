@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 
-app.use("/", userRouter);
+app.use("/auth", userRouter);
 
 
 app.use("/todos", todoRouter);

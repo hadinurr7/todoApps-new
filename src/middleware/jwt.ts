@@ -11,7 +11,7 @@ export const verifyToken = (
   // console.log("ini token",token,req.headers);
 
   if (!token) {
-    res.status(401).send({
+    res.status(401).json({
       message: "authorization failed, token is missing",
     });
     return;
@@ -20,9 +20,9 @@ export const verifyToken = (
   verify(token, JWT_SECRET!, (err, payload) => {
     if (err) {
       if (err instanceof TokenExpiredError) {
-        res.status(401).send({ message: "Token expired" });
+        res.status(401).json({ message: "Token expired" });
       } else {
-        res.status(401).send({ message: "Invalid token" });
+        res.status(401).json({ message: "Invalid token" });
       }
     }
     res.locals.user = payload;

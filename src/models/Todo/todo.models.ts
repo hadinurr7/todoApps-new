@@ -1,6 +1,6 @@
-import { pool } from "../config";
+import { pool } from "../../config";
 
-export const insertTodoModels = async (
+export const createTodo = async (
   creatorId: number,
   title: string,
   description: string
@@ -14,7 +14,7 @@ export const insertTodoModels = async (
 };
 
 
-export const editTodoModels = async (
+export const editTodo = async (
   id: number,
   title: string,
   description: string
@@ -26,7 +26,7 @@ export const editTodoModels = async (
   return result.rows[0];
 };
 
-export const updateStatusTodoModels = async (id: number, status: string) => {
+export const updateStatusTodo = async (id: number, status: string) => {
   const result = await pool.query(
     `UPDATE "todoApps"."todos" SET status = $1 WHERE id = $2 RETURNING *`,
     [status, id]
@@ -34,23 +34,12 @@ export const updateStatusTodoModels = async (id: number, status: string) => {
   return result.rows[0];
 };
 
-export const assignTodoModels = async (
+export const createTodoWithAssignee = async (
   title: string,
   description: string,
   creatorId: number,
-  assigneeEmail: string
+  assigneeId: number
 ) => {
-  const user = await pool.query(
-    `SELECT id FROM "todoApps".users WHERE email = $1`,
-    [assigneeEmail]
-  );
-
-  if (user.rowCount === 0) {
-    throw new Error("Assignee email not found");
-  }
-
-  const assigneeId = user.rows[0].id;
-
   const result = await pool.query(
     `INSERT INTO "todoApps".todos (title, description, status, creator_id, assignee_id)
      VALUES ($1, $2, 'todo', $3, $4) RETURNING *`,
@@ -59,4 +48,5 @@ export const assignTodoModels = async (
 
   return result.rows[0];
 };
+
 
