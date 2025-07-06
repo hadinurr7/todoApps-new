@@ -2,7 +2,7 @@ export interface TodoPayload {
   id: number;
   title: string;
   description: string;
-  status: "todo" | "in progress" | "done";
+  status: string
   creatorId: number;
   assigneeId?: number;
 }
@@ -15,7 +15,7 @@ export interface CreateTodoPayload {
 
 export interface UpdateStatusPayload {
   id: number;
-  status: "todo" | "in progress" | "done";
+  status: string
 }
 
 export interface CreateTodoWithAssigneePayload extends CreateTodoPayload {

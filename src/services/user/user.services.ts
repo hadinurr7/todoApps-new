@@ -6,7 +6,7 @@ import {
   findUserByEmailOrUsername,
 } from "../../models/user/user.models";
 
-const JWT_SECRET = process.env.JWT_SECRET || "default_secret";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export async function registerUser(payload: RegisterPayload) {
   const { username, email, password } = payload;
@@ -31,9 +31,9 @@ export async function loginUser(payload: LoginPayload) {
   const isValid = await argon2.verify(user.password, password);
   if (!isValid) throw new Error("Invalid credentials");
 
-  const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
+  const token = jwt.sign({ id: user.id }, JWT_SECRET!, {
     expiresIn: "1h",
   });
 
-  return { username: user.username, token };
+  return { username: user.username, email, token };
 }

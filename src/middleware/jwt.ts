@@ -21,8 +21,10 @@ export const verifyToken = (
     if (err) {
       if (err instanceof TokenExpiredError) {
         res.status(401).json({ message: "Token expired" });
+        return
       } else {
         res.status(401).json({ message: "Invalid token" });
+        return
       }
     }
     res.locals.user = payload;
