@@ -1,4 +1,4 @@
-import { Request, NextFunction } from "express";
+import { Request } from "express";
 import {
   createTodoService,
   createTodoWithAssigneeService,
@@ -10,8 +10,7 @@ import { TypedResponse } from "../types/typed.response";
 
 export const createTodoController = async (
   req: Request,
-  res: TypedResponse<TodoResponse>,
-  next: NextFunction
+  res: TypedResponse<TodoResponse>
 ) => {
   try {
     const creatorId = Number(res.locals.user.id);
@@ -48,8 +47,7 @@ export const createTodoController = async (
 
 export const editTodoController = async (
   req: Request,
-  res: TypedResponse<TodoResponse>,
-  next: NextFunction
+  res: TypedResponse<TodoResponse>
 ) => {
   try {
     const { id } = req.params;
@@ -77,14 +75,12 @@ export const editTodoController = async (
       message: "Failed to edit todo",
       data: {},
     });
-    next(error);
   }
 };
 
 export const updateStatusController = async (
   req: Request,
-  res: TypedResponse<TodoResponse>,
-  next: NextFunction
+  res: TypedResponse<TodoResponse>
 ) => {
   try {
     const { id } = req.params;
@@ -112,14 +108,12 @@ export const updateStatusController = async (
       message: "Failed to update status",
       data: {},
     });
-    next(error);
   }
 };
 
 export const assignTodoController = async (
   req: Request,
-  res: TypedResponse<TodoResponse>,
-  next: NextFunction
+  res: TypedResponse<TodoResponse>
 ) => {
   try {
     const { title, description, assigneeId } = req.body;
@@ -161,6 +155,5 @@ export const assignTodoController = async (
       message: "Failed to assign todo",
       data: {},
     });
-    next(error);
   }
 };

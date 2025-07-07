@@ -1,4 +1,4 @@
-import { NextFunction, Request } from "express";
+import { Request } from "express";
 import { loginUser, registerUser } from "../services/user/user.services";
 import { LoginResponse, RegisterResponse } from "../types/ApiResponse";
 import { RegisterPayload, LoginPayload } from "../types/user.types";
@@ -6,8 +6,7 @@ import { TypedResponse } from "../types/typed.response";
 
 export const registerController = async (
   req: Request,
-  res: TypedResponse<RegisterResponse>,
-  next: NextFunction
+  res: TypedResponse<RegisterResponse>
 ) => {
   try {
     const { username, email, password } = req.body;
@@ -36,14 +35,12 @@ export const registerController = async (
       message: err.message || "Register failed",
       data: {},
     });
-    next(error);
   }
 };
 
 export const loginController = async (
   req: Request,
-  res: TypedResponse<LoginResponse>,
-  next: NextFunction
+  res: TypedResponse<LoginResponse>
 ) => {
   try {
     const { email, username, password } = req.body;
@@ -71,6 +68,5 @@ export const loginController = async (
         token: "",
       },
     });
-    next(error);
   }
 };
