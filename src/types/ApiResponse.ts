@@ -15,7 +15,8 @@ export interface RegisterResponse extends GeneralResponse {
 
 export interface LoginResponse extends GeneralResponse {
   data: {
-    username: string;
+    username?: string;
+    email?: string
     token: string;
   };
 }
@@ -31,6 +32,8 @@ export interface Todo {
   creatorId: number
 }
 
+// types/ApiResponse.ts
 export interface TodoResponse extends GeneralResponse {
-  data: Todo | null;
+  data: Todo | Record<string, never>;
 }
+

@@ -14,7 +14,7 @@ export async function registerUser(payload: RegisterPayload) {
   const user = await findUserByEmailOrUsername(email, username);
 
   const existing = user?.email || user?.username;
-  if (existing) throw new Error("User already registered");
+  if (existing) throw new Error("email or username already registered");
 
   const hashedPassword = await argon2.hash(password);
   await createUser(username, email, hashedPassword);
@@ -35,5 +35,9 @@ export async function loginUser(payload: LoginPayload) {
     expiresIn: "1h",
   });
 
-  return { username: user.username, email, token };
+  return {
+    username: user.username,
+    email: user.email,
+    token,
+  };
 }

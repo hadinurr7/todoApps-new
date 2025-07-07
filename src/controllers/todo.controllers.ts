@@ -20,8 +20,8 @@ export const createTodoController = async (
     if (!title) {
       res.status(400).json({
         status: 0,
-        message: "Tittle is required",
-        data: {} as any,
+        message: "Title is required",
+        data: {},
       });
       return;
     }
@@ -37,13 +37,12 @@ export const createTodoController = async (
       message: "Todo created",
       data: todo,
     });
-  } catch (error: any) {
+  } catch (error) {
     res.status(400).json({
       status: 0,
-      message: error.message || "Failed to create todo",
-      data: {} as any,
+      message: "Failed to create todo",
+      data: {},
     });
-    next(error);
   }
 };
 
@@ -56,6 +55,15 @@ export const editTodoController = async (
     const { id } = req.params;
     const { title, description } = req.body;
 
+    if (!title && !description) {
+      res.status(400).json({
+        status: 0,
+        message: "Title or description is required",
+        data: {},
+      });
+      return;
+    }
+
     const todo = await editTodoService(Number(id), title, description);
 
     res.status(200).json({
@@ -63,11 +71,11 @@ export const editTodoController = async (
       message: "Todo updated",
       data: todo,
     });
-  } catch (error: any) {
+  } catch (error) {
     res.status(400).json({
       status: 0,
-      message: error.message || "Failed to edit todo",
-      data: {} as any,
+      message: "Failed to edit todo",
+      data: {},
     });
     next(error);
   }
@@ -82,6 +90,15 @@ export const updateStatusController = async (
     const { id } = req.params;
     const { status } = req.body;
 
+    if (!status) {
+      res.status(400).json({
+        status: 0,
+        message: "Status is required",
+        data: {},
+      });
+      return;
+    }
+
     const todo = await updateStatusTodoService({ id: Number(id), status });
 
     res.status(200).json({
@@ -89,11 +106,11 @@ export const updateStatusController = async (
       message: "Status updated",
       data: todo,
     });
-  } catch (error: any) {
+  } catch (error) {
     res.status(400).json({
       status: 0,
-      message: error.message || "Failed to update status",
-      data: {} as any,
+      message: "Failed to update status",
+      data: {},
     });
     next(error);
   }
@@ -112,16 +129,16 @@ export const assignTodoController = async (
       res.status(400).json({
         status: 0,
         message: "Tittle required",
-        data: {} as any,
+        data: {},
       });
       return;
     }
 
-      if (!assigneeId) {
+    if (!assigneeId) {
       res.status(400).json({
         status: 0,
-        message: "Tittle or Assignee is required",
-        data: {} as any,
+        message: "Assignee is required",
+        data: {},
       });
       return;
     }
@@ -138,11 +155,11 @@ export const assignTodoController = async (
       message: "Todo assigned",
       data: todo,
     });
-  } catch (error: any) {
+  } catch (error) {
     res.status(400).json({
       status: 0,
-      message: error.message || "Failed to assign todo",
-      data: {} as any,
+      message: "Failed to assign todo",
+      data: {},
     });
     next(error);
   }

@@ -11,8 +11,17 @@ export const registerController = async (
 ) => {
   try {
     const { username, email, password } = req.body;
-    const payload: RegisterPayload = { username, email, password };
 
+    if (!username || !email || !password) {
+      res.status(400).json({
+        status: 0,
+        message: "Username, email, and password are required",
+        data: {},
+      });
+      return;
+    }
+
+    const payload: RegisterPayload = { username, email, password };
     await registerUser(payload);
 
     res.status(201).json({
@@ -20,10 +29,11 @@ export const registerController = async (
       message: "Register success",
       data: {},
     });
-  } catch (error: any) {
+  } catch (error) {
+    const err = error as Error;
     res.status(400).json({
       status: 0,
-      message: error.message || "Register failed",
+      message: err.message || "Register failed",
       data: {},
     });
     next(error);
@@ -37,6 +47,10 @@ export const loginController = async (
 ) => {
   try {
     const { email, username, password } = req.body;
+
+    if (!password || (!email && !username)) {
+      throw new Error("Username or email and password are required");
+    }
     const payload: LoginPayload = { email, username, password };
 
     const result = await loginUser(payload);
@@ -46,12 +60,14 @@ export const loginController = async (
       message: "Login success",
       data: result,
     });
-  } catch (error: any) {
+  } catch (error) {
+    const err = error as Error;
     res.status(401).json({
       status: 0,
-      message: error.message || "Login failed",
+      message: err.message || "Login failed",
       data: {
         username: "",
+        email: "",
         token: "",
       },
     });
